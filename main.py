@@ -1,4 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget
+from constants import mainConstants
+import sys
+sys.path.append('./src/constants')
 
 
 class MainWindow(QMainWindow):
@@ -6,7 +9,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
 
-        self.setWindowTitle("My App")
+        self.setWindowTitle(mainConstants.WINDOWTITLE)
 
         layout = QGridLayout()
 
