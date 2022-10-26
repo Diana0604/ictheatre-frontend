@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel
 from apiGetters import getStockPrice
 
-class StockDisplay(QWidget):
+class SingleStock(QWidget):
     def __init__(self, companyName):
         super().__init__()
 
