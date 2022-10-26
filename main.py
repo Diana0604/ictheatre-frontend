@@ -1,13 +1,11 @@
-import sys
-sys.path.append('./src/constants')
-sys.path.append('./src/components/displays')
-sys.path.append('./src/components/stock')
-sys.path.append('./src/api')
-from apiGetters import getCompaniesArray
-from displays import TimeDisplay
+#constants
 from constants import mainConstants
-from stock import SingleStock
-from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget
+#Qt components
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
+from PyQt5.QtCore import Qt
+#my components
+from displays import TimeDisplay
+from stock import StockList
 
 
 class MainWindow(QMainWindow):
@@ -17,32 +15,26 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle(mainConstants.WINDOWTITLE)
 
-        layout = QGridLayout()
+        pageLayout = QVBoxLayout()
 
-        #top middle we display time as it passes
-        layout.addWidget(TimeDisplay(), 0, 1)
+        # top middle we display time as it passes
+        pageLayout.addWidget(TimeDisplay(), alignment=Qt.AlignCenter)
 
-        #get companies list from API and display in two rows below
-        companiesArray = getCompaniesArray()
-        companyPosX = 1
-        companyPosY = 0
-        for company in companiesArray:
-            layout.addWidget(SingleStock(company), companyPosX, companyPosY)
-            if companyPosY == 2:
-                companyPosX = companyPosX + 1
-                companyPosY = 0
-            else:
-                companyPosY = 2
+        # display list of stock in market
+        pageLayout.addWidget(StockList())
 
-        #prepare and display main widget
+        # prepare and display main widget
         widget = QWidget()
-        widget.setLayout(layout)
+        widget.setLayout(pageLayout)
         self.setCentralWidget(widget)
 
+def init():
+    #start app
+    app = QApplication([])
 
-app = QApplication([])
+    #create main window
+    window = MainWindow()
+    window.show()
 
-window = MainWindow()
-window.show()
-
-app.exec()
+    #start exec loop
+    app.exec()
