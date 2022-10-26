@@ -1,8 +1,9 @@
+from displays import TimeDisplay
+from constants import mainConstants
+from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget
 import sys
 sys.path.append('./src/constants')
-
-from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget
-from constants import mainConstants
+sys.path.append('./src/components/displays')
 
 
 class MainWindow(QMainWindow):
@@ -13,6 +14,8 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(mainConstants.WINDOWTITLE)
 
         layout = QGridLayout()
+
+        layout.addWidget(TimeDisplay(), 0, 1)
 
         widget = QWidget()
         widget.setLayout(layout)
