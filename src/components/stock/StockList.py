@@ -1,8 +1,8 @@
-#Qt components
+# Qt components
 from PyQt5.QtWidgets import QWidget, QGridLayout
-#My components
+# My components
 from stock import SingleStock
-#API interaction
+# API interaction
 from apiGetters import getCompaniesArray
 
 
@@ -18,7 +18,8 @@ class StockList(QWidget):
         companyPosX = 0
         companyPosY = 0
         for company in companiesArray:
-            layout.addWidget(SingleStock(company), companyPosX, companyPosY)
+            layout.addWidget(SingleStock(
+                company["name"], company["currentPricePerShare"]), companyPosX, companyPosY)
             # update pos for next company
             if companyPosY == 2:
                 companyPosX = companyPosX + 1

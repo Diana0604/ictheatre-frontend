@@ -1,5 +1,11 @@
+import requests
+
+
 def getCompaniesArray():
-    return ['Apple', 'Apple', 'Apple', 'Apple', 'Apple', 'Apple', 'Apple', 'Apple', 'Apple', 'Apple']
+    companiesJson = requests.get(
+        "http://raspberrypi:3000/mysql/companies").json()
+    return companiesJson
+
 
 def getStockPrice(company):
     return '$000.00'
