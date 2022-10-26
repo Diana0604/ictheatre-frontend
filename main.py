@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget
-from constants import mainConstants
 import sys
 sys.path.append('./src/constants')
+
+from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget
+from constants import mainConstants
 
 
 class MainWindow(QMainWindow):
