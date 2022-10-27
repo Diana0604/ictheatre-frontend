@@ -1,31 +1,27 @@
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel
-from displays import PriceDisplay
-from stringHelpers import removeAfterN
+from stringHelpers import numberToTwoDecimals, removeAfterN
 
 
 class SingleStock(QWidget):
-    def __init__(self, companyName, companyPrice):
+    def __init__(self, companyName, stockPrice):
         super().__init__()
 
         layout = QHBoxLayout()
+
         # single stock displays:
         # COMPANY NAME | CURRENT STOCK PRICE - updated with time | UP / DOWN arrow - updated with time
         layout.addWidget(QLabel(companyName))
-        companyPriceString = f'${companyPrice}'
-        if '.' in companyPriceString:
-            commaIndex = companyPriceString.index('.')
-            companyPriceString = removeAfterN(
-                companyPriceString, commaIndex + 3)
-        self.priceDisplay = QLabel(f'${companyPriceString}')
+
+        # get stock price with two decimals
+        stockPrice = numberToTwoDecimals(stockPrice)
+        self.priceDisplay = QLabel(f'${stockPrice}')
         layout.addWidget(self.priceDisplay)
+
+        # add arrow
         layout.addWidget(QLabel('UP'))
 
         self.setLayout(layout)
 
-    def updatePriceDisplay(self, companyPrice):
-        companyPriceString = f'${companyPrice}'
-        if '.' in companyPriceString:
-            commaIndex = companyPriceString.index('.')
-            companyPriceString = removeAfterN(
-                companyPriceString, commaIndex + 3)
-        self.priceDisplay.setText(f'${companyPriceString}')
+    def updatePriceDisplay(self, stockPrice):
+        stockPrice = numberToTwoDecimals(stockPrice)
+        self.priceDisplay.setText(stockPrice)
