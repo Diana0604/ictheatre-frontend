@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel
+from displays import PriceDisplay
 from stringHelpers import removeAfterN
 
 
@@ -15,8 +16,16 @@ class SingleStock(QWidget):
             commaIndex = companyPriceString.index('.')
             companyPriceString = removeAfterN(
                 companyPriceString, commaIndex + 3)
-
-        layout.addWidget(QLabel(f'${companyPriceString}'))
+        self.priceDisplay = QLabel(f'${companyPriceString}')
+        layout.addWidget(self.priceDisplay)
         layout.addWidget(QLabel('UP'))
 
         self.setLayout(layout)
+
+    def updatePriceDisplay(self, companyPrice):
+        companyPriceString = f'${companyPrice}'
+        if '.' in companyPriceString:
+            commaIndex = companyPriceString.index('.')
+            companyPriceString = removeAfterN(
+                companyPriceString, commaIndex + 3)
+        self.priceDisplay.setText(f'${companyPriceString}')
