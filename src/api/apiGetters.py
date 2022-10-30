@@ -1,9 +1,12 @@
 import requests
+from constants import apiConstants
 
 
 def getCompaniesArray():
-    companiesJson = requests.get(
-        "http://raspberrypi:3000/mysql/companies").json()
+    companies = requests.get(
+        f"{apiConstants.BASEURL}/companies")
+    print(companies)
+    companiesJson = companies.json()
     return companiesJson
 
 
