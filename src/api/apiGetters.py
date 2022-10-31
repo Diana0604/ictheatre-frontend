@@ -5,7 +5,6 @@ from constants import apiConstants
 def getCompaniesArray():
     companies = requests.get(
         f"{apiConstants.BASEURL}/companies")
-    print(companies)
     companiesJson = companies.json()
     return companiesJson
 
