@@ -1,11 +1,10 @@
 #constants
 from constants import mainConstants
 #Qt components
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QTabWidget
 from PyQt5.QtCore import Qt
 #my components
-from displays import TimeDisplay
-from stock import StockList
+from tabs import Market
 
 
 class MainWindow(QMainWindow):
@@ -13,20 +12,20 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
 
+        # set window title
         self.setWindowTitle(mainConstants.WINDOWTITLE)
 
-        pageLayout = QVBoxLayout()
+        # create tabs object
+        tabs = QTabWidget()
+        tabs.setTabPosition(QTabWidget.West)
+        tabs.setMovable(True)
 
-        # top middle we display time as it passes
-        pageLayout.addWidget(TimeDisplay(), alignment=Qt.AlignCenter)
+        # add stock market
+        market = Market()
+        tabs.addTab(market, "market")
 
-        # display list of stock in market
-        pageLayout.addWidget(StockList())
-
-        # prepare and display main widget
-        widget = QWidget()
-        widget.setLayout(pageLayout)
-        self.setCentralWidget(widget)
+        # set tabs as central widget
+        self.setCentralWidget(tabs)
 
 def init():
     #start app

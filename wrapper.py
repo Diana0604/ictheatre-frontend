@@ -3,6 +3,7 @@ import sys
 sys.path.append('./src/constants')
 sys.path.append('./src/components/displays')
 sys.path.append('./src/components/stock')
+sys.path.append('./src/components/tabs')
 sys.path.append('./src/api')
 sys.path.append('./src/helpers')
 import main
