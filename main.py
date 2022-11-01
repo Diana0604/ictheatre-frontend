@@ -1,10 +1,11 @@
 #constants
 from constants import mainConstants
 #Qt components
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QTabWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget
 from PyQt5.QtCore import Qt
 #my components
 from tabs import Market
+from tabs import General
 
 
 class MainWindow(QMainWindow):
@@ -20,9 +21,12 @@ class MainWindow(QMainWindow):
         tabs.setTabPosition(QTabWidget.West)
         tabs.setMovable(True)
 
-        # add stock market
+        # add stock market tab
         market = Market()
         tabs.addTab(market, "market")
+        # add general information tab
+        generalInformation = General()
+        tabs.addTab(generalInformation, "general information")
 
         # set tabs as central widget
         self.setCentralWidget(tabs)
