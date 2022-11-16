@@ -4,13 +4,17 @@ from PyQt5.QtWidgets import QWidget, QGridLayout
 from stock import SingleStock
 # API interaction
 from apiGetters import getCompaniesArray
+import time
 
 import time
 import threading
 
+stopUpdateThread = False
+
 
 class StockList(QWidget):
     def __init__(self):
+        global stopUpdateThread
         super().__init__()
 
         layout = QGridLayout()
@@ -36,17 +40,22 @@ class StockList(QWidget):
 
         # init the updates
         # stopThread -> let's the thread know when the class is destroyed
-        self.stopUpdateThread = False
+        stopUpdateThread = False
         # start new thread that updates every second
         updateThread = threading.Thread(target=self.updatePrice, args=[])
         updateThread.start()
 
     def __del__(self):
-        self.stopUpdateThread = True
+        global stopUpdateThread
+        print('deleting!!!!')
+        stopUpdateThread = True
 
     def updatePrice(self):
+        global stopUpdateThread
         while True:
-            if self.stopUpdateThread:
+            print(stopUpdateThread)
+            time.sleep(0.2)
+            if stopUpdateThread:
                 return
             # get new list of companies
             newCompaniesArray = getCompaniesArray()
