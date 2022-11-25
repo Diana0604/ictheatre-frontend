@@ -1,2 +1,3 @@
 from Market import *
-from General import *
+from Sellers import *
+from CompanyInformation import *

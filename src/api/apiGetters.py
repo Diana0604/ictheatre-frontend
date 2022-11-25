@@ -10,4 +10,16 @@ def getCompaniesArray():
         return companiesJson
     except :
         print("not able to connect to database")
-        return [{"name": "Demo Broker", "currentPricePerShare" : "0.00"} , { "name": "Demo Broker", "currentPricePerShare" : "0.00"}]
+        return [{"name": "Demo Company", "currentPricePerShare" : "0.00"} , { "name": "Demo Company", "currentPricePerShare" : "0.00"}]
+    
+
+# get array with info player company information
+def getPlayerInfo():
+    try :
+        playerCompany = requests.get(
+            f"{apiConstants.BASEURL}/playercompany")
+        companiesJson = playerCompany.json()
+        return companiesJson
+    except :
+        print("not able to connect to database")
+        return { "name": "Best Company Ever", "stockValueScore": 0, "publicRelationsIndex": 0.5, "liquidAssets": 500000}

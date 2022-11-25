@@ -1,10 +1,10 @@
 #Qt components
 from PyQt5.QtWidgets import QWidget, QGridLayout, QVBoxLayout
 #my components
-from displays import CompanyInformationDisplay, PotentialClientsDisplay, PotentialSellersDisplay
+from displays import PotentialClientsDisplay, PotentialSellersDisplay
 
 
-class General(QWidget):
+class Sellers(QWidget):
 
     def __init__(self):
         super(QWidget, self).__init__()
@@ -15,7 +15,6 @@ class General(QWidget):
 
         leftLayout = QVBoxLayout()
 
-        leftLayout.addWidget(CompanyInformationDisplay())
         leftLayout.addWidget(PotentialClientsDisplay())
         leftWidget = QWidget()
         leftWidget.setLayout(leftLayout)

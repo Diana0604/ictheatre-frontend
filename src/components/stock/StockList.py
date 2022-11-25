@@ -53,8 +53,8 @@ class StockList(QWidget):
     def updatePrice(self):
         global stopUpdateThread
         while True:
-            print(stopUpdateThread)
-            time.sleep(0.2)
+            #print(stopUpdateThread)
+            time.sleep(30)
             if stopUpdateThread:
                 return
             # get new list of companies
