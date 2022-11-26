@@ -1,5 +1,6 @@
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel
+from PyQt5.QtWidgets import QWidget, QHBoxLayout
 from stringHelpers import numberToTwoDecimals, removeAfterN
+from labels import RegularLabel
 
 
 class SingleStock(QWidget):
@@ -10,15 +11,15 @@ class SingleStock(QWidget):
 
         # single stock displays:
         # COMPANY NAME | CURRENT STOCK PRICE - updated with time | UP / DOWN arrow - updated with time
-        layout.addWidget(QLabel(companyName))
+        layout.addWidget(RegularLabel(companyName))
 
         # get stock price with two decimals
         stockPrice = numberToTwoDecimals(stockPrice)
-        self.priceDisplay = QLabel(f'${stockPrice}')
+        self.priceDisplay = RegularLabel(f'${stockPrice}')
         layout.addWidget(self.priceDisplay)
 
         # add arrow
-        layout.addWidget(QLabel('UP'))
+        layout.addWidget(RegularLabel('UP'))
 
         self.setLayout(layout)
 

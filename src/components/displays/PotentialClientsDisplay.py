@@ -1,5 +1,6 @@
 #Qt components
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout
+from labels import Title
 
 
 class PotentialClientsDisplay(QWidget):
@@ -9,9 +10,9 @@ class PotentialClientsDisplay(QWidget):
 
         verticalLayout = QVBoxLayout()
 
-        verticalLayout.addWidget(QLabel("Bill Gates - Microsoft"))
-        verticalLayout.addWidget(QLabel("Steve Jobs - Apple"))
-        verticalLayout.addWidget(QLabel("Elon Musk - X. Com / Paypal"))
-        verticalLayout.addWidget(QLabel("Jeff Bezos - Amazon"))
+        verticalLayout.addWidget(Title("Bill Gates - Microsoft"))
+        verticalLayout.addWidget(Title("Steve Jobs - Apple"))
+        verticalLayout.addWidget(Title("Elon Musk - X. Com / Paypal"))
+        verticalLayout.addWidget(Title("Jeff Bezos - Amazon"))
 
         self.setLayout(verticalLayout)

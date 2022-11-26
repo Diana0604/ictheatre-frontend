@@ -1,5 +1,5 @@
 #Qt components
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from PyQt5.QtCore import QTimer
 from apiGetters import getPlayerInfo
 from labels import Title, RegularLabel

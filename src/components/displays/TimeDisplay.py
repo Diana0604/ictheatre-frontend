@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QLabel
+from labels import RegularLabel
 
 #display current time
-class TimeDisplay(QLabel):
+class TimeDisplay(RegularLabel):
     def __init__(self):
         super().__init__("00:00")
