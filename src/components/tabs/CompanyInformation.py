@@ -1,58 +1,53 @@
 #Qt components
-import threading
-import time
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout
+from PyQt5.QtCore import QTimer
 from apiGetters import getPlayerInfo
-
-stopUpdateThread = False
+from labels import Title, RegularLabel
 
 
 class CompanyInformation(QWidget):
 
     def __init__(self):
-        global stopUpdateThread
         super(QWidget, self).__init__()
 
-        self.companyInformation = getPlayerInfo()
-
-        self.companyInformation['publicRelationsIndex'] = float(self.companyInformation['publicRelationsIndex'])*100
+        companyInformation = getPlayerInfo()
+        #name widget
+        self.nameWidget = Title(f'{companyInformation["name"]}')
+        print(companyInformation)
+        self.liquidAssetsWidget = RegularLabel(
+            f'Liquid Assets: {companyInformation["liquidAssets"]}')
+        #stock value score
+        self.stockValueScoreWidget = RegularLabel(
+            f'Stock Value Score: {companyInformation["stockValueScore"]}')
+        #PRI
+        newPRI = float(companyInformation["publicRelationsIndex"]) * 100
+        self.publicRelationsIndexWidget = RegularLabel(
+            f'Public Relations Index: {newPRI}')
 
         verticalLayout = QVBoxLayout()
 
-        verticalLayout.addWidget(QLabel(f"{self.companyInformation['name']}"))
-        verticalLayout.addWidget(QLabel(f"Liquid Assets: ${self.companyInformation['liquidAssets']}"))
-        verticalLayout.addWidget(QLabel(f"Stock Value:{self.companyInformation['stockValueScore']}"))
-        verticalLayout.addWidget(QLabel(f"PR Index: {self.companyInformation['publicRelationsIndex']}%"))
+        verticalLayout.addWidget(self.nameWidget)
+        verticalLayout.addWidget(self.liquidAssetsWidget)
+        verticalLayout.addWidget(self.stockValueScoreWidget)
+        verticalLayout.addWidget(self.publicRelationsIndexWidget)
+
+        self.setMaximumHeight(200)
+
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.updateInfo)
+        self.timer.start(2000)
 
         self.setLayout(verticalLayout)
 
-        
-        # init the updates
-        # stopThread -> let's the thread know when the class is destroyed
-        stopUpdateThread = False
-        # start new thread that updates every second
-        updateThread = threading.Thread(target=self.updateInfo, args=[])
-        updateThread.start()
-
-        
-    def __del__(self):
-        global stopUpdateThread
-        print('deleting!!!!')
-        stopUpdateThread = True
-
     def updateInfo(self):
-        global stopUpdateThread
-        while True:
-            #print(stopUpdateThread)
-            time.sleep(2)
-            if stopUpdateThread:
-                return
-
-            # get new player info
-            newCompanyInformation = getPlayerInfo()
-            newCompanyInformation['publicRelationsIndex'] = float(newCompanyInformation['publicRelationsIndex'])*100
-            #update self.companyInformation
-            self.companyInformation = newCompanyInformation
-            
-
-            
+        # get new player info
+        companyInformation = getPlayerInfo()
+        #update self.companyInformation
+        self.nameWidget.setText(str(companyInformation['name']))
+        self.liquidAssetsWidget.setText(
+            f'Liquid Assets: {companyInformation["liquidAssets"]}')
+        self.stockValueScoreWidget.setText(
+            f'Stock Value Score: {companyInformation["stockValueScore"]}')
+        newPRI = str(float(companyInformation['publicRelationsIndex']) * 100)
+        self.publicRelationsIndexWidget.setText(
+            f'Public Relations Index: {newPRI}')

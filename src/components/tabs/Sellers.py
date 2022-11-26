@@ -1,26 +1,36 @@
-#Qt components
-from PyQt5.QtWidgets import QWidget, QGridLayout, QVBoxLayout
-#my components
-from displays import PotentialClientsDisplay, PotentialSellersDisplay
+# Qt components
+from PyQt5.QtWidgets import QWidget, QGridLayout
+from PyQt5.QtCore import QTimer
+# My components
+from sellers import SingleSeller
+# API interaction
+from apiGetters import getSellersList
 
 
 class Sellers(QWidget):
 
     def __init__(self):
-        super(QWidget, self).__init__()
+        global stopUpdateThread
+        super().__init__()
 
+        layout = QGridLayout()
 
-
-        mainLayout = QGridLayout()
-
-        leftLayout = QVBoxLayout()
-
-        leftLayout.addWidget(PotentialClientsDisplay())
-        leftWidget = QWidget()
-        leftWidget.setLayout(leftLayout)
-
-        mainLayout.addWidget(leftWidget, 0, 0)
-        mainLayout.addWidget(PotentialSellersDisplay(), 0, 1)
-
-        # set layout
-        self.setLayout(mainLayout)
+        # get sellers list from API
+        sellerBundles = getSellersList()
+        self.sellersList = sellerBundles['sellers']
+        self.bundlesList = sellerBundles['shareBundles']
+        # iterate over sellers list and display in two columns
+        companyPosX = 0
+        companyPosY = 0
+        for seller in self.sellersList:
+            print(seller)
+            seller["sellerWidget"] = SingleSeller(seller, self.bundlesList)
+            layout.addWidget(seller["sellerWidget"])
+            # update pos for next company
+            if companyPosY == 2:
+                companyPosX = companyPosX + 1
+                companyPosY = 0
+            else:
+                companyPosY = 2
+        # display layout
+        self.setLayout(layout)

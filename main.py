@@ -1,11 +1,10 @@
 #constants
 from constants import mainConstants
 #Qt components
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QScrollArea
 from PyQt5.QtCore import Qt
 #my components
-from tabs import Market
-from tabs import General
+from tabs import Market, Sellers, CompanyInformation
 
 
 class MainWindow(QMainWindow):
@@ -25,11 +24,23 @@ class MainWindow(QMainWindow):
         market = Market()
         tabs.addTab(market, "market")
         # add general information tab
-        generalInformation = General()
-        tabs.addTab(generalInformation, "general information")
+        sellersInformation = Sellers()
+        scrollArea = QScrollArea()
+        scrollArea.setWidget(sellersInformation)
+        scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        #scrollArea.setWidgetResizable(True)
+        tabs.addTab(scrollArea, "general information")
+        #add score tab
+        companyInformation = CompanyInformation()
+        tabs.addTab(companyInformation, "score")
 
         # set tabs as central widget
         self.setCentralWidget(tabs)
+
+        self.setMaximumWidth(500)
+        self.setMaximumHeight(500)
+
 
 def init():
     #start app

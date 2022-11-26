@@ -1,18 +1,13 @@
 # Qt components
 from PyQt5.QtWidgets import QWidget, QGridLayout
+from PyQt5.QtCore import QTimer
 # My components
 from stock import SingleStock
 # API interaction
 from apiGetters import getCompaniesArray
-import time
-
-import time
-import threading
-
-stopUpdateThread = False
-
 
 class StockList(QWidget):
+
     def __init__(self):
         global stopUpdateThread
         super().__init__()
@@ -27,8 +22,8 @@ class StockList(QWidget):
         for company in self.companiesArray:
             company["singleStockWidget"] = SingleStock(
                 company["name"], company["currentPricePerShare"])
-            layout.addWidget(company["singleStockWidget"],
-                             companyPosX, companyPosY)
+            layout.addWidget(company["singleStockWidget"], companyPosX,
+                             companyPosY)
             # update pos for next company
             if companyPosY == 2:
                 companyPosX = companyPosX + 1
@@ -39,31 +34,18 @@ class StockList(QWidget):
         self.setLayout(layout)
 
         # init the updates
-        # stopThread -> let's the thread know when the class is destroyed
-        stopUpdateThread = False
-        # start new thread that updates every second
-        updateThread = threading.Thread(target=self.updatePrice, args=[])
-        updateThread.start()
-
-    def __del__(self):
-        global stopUpdateThread
-        print('deleting!!!!')
-        stopUpdateThread = True
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.updatePrice)
+        self.timer.start(30000)
 
     def updatePrice(self):
-        global stopUpdateThread
-        while True:
-            #print(stopUpdateThread)
-            time.sleep(30)
-            if stopUpdateThread:
-                return
-            # get new list of companies
-            newCompaniesArray = getCompaniesArray()
-            # iterate over list of companies
-            for i in range(len(self.companiesArray)):
-                newStockPrice = newCompaniesArray[i]["currentPricePerShare"]
-                # first -> update price in our list
-                self.companiesArray[i]["currentPricePerShare"] = newStockPrice
-                # second -> update price that is displayed
-                self.companiesArray[i]["singleStockWidget"].updatePriceDisplay(
-                    newStockPrice)
+        # get new list of companies
+        newCompaniesArray = getCompaniesArray()
+        # iterate over list of companies
+        for i in range(len(self.companiesArray)):
+            newStockPrice = newCompaniesArray[i]["currentPricePerShare"]
+            # first -> update price in our list
+            self.companiesArray[i]["currentPricePerShare"] = newStockPrice
+            # second -> update price that is displayed
+            self.companiesArray[i]["singleStockWidget"].updatePriceDisplay(
+                newStockPrice)
