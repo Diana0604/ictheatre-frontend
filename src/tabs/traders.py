@@ -21,7 +21,20 @@ for shareBundle in shareBundlesList:
         f'{companies[shareBundle["companyId"]]["name"]}: {shareBundle["quantity"]} shares - currently valued at ${numberToTwoDecimals(companies[shareBundle["companyId"]]["currentPricePerShare"])}'
     )
 
-tradersLayout = []
+tradersLayout = [[
+    sg.Text(
+        "These are the traders that you can call to convince to buy and sell shares."
+    ),
+],
+                 [
+                     sg.Text("Click here",
+                             enable_events=True,
+                             key="open-guidelines",
+                             text_color="#3a02fe",
+                             font=('', 10, ['underline'])),
+                     sg.Text("for more information on how to do this.")
+                 ]]
+
 for traderId in traders:
     newTraderObject = [
         sg.Text(traders[traderId]['name'], key=f'trader-{traderId}'),
@@ -54,6 +67,21 @@ def toggleTraderShares(window, event):
     window[sharesToToggle].update(visible=not traders[id]["open"])
     window[event].update(SYMBOL_DOWN if traders[id]["open"] else SYMBOL_UP)
     traders[id]["open"] = not traders[id]["open"]
+
+
+def openGuidelinesWindow(window):
+    layout = [[sg.Text(
+        "New Window",
+        key="new",
+    )]]
+    window = sg.Window("Second Window", layout, modal=True)
+    choice = None
+    while True:
+        event, values = window.read()
+        if event == "Exit" or event == sg.WIN_CLOSED:
+            break
+
+    window.close()
 
 
 def tradersUpdate(window):

@@ -2,7 +2,7 @@ import PySimpleGUI as sg
 import threading
 import time
 from score import scoreTab, scoreUpdate
-from traders import tradersTab, toggleTraderShares, tradersUpdate
+from traders import openGuidelinesWindow, tradersTab, toggleTraderShares, tradersUpdate
 
 sg.theme('Default1')
 
@@ -40,6 +40,8 @@ def run(window):
             break
         if 'button-toggle-trader' in event:
             toggleTraderShares(window, event)
+        if 'open-guidelines' in event:
+            openGuidelinesWindow(window)
 
 
 def end(window):

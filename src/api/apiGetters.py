@@ -1,6 +1,7 @@
 import requests
 #from constants import apiConstants
 
+#BASEURL = "http://raspbx.local:3000/mysql"  # for dev in non raspbery computer
 BASEURL = "http://localhost:3000/mysql"  # for dev in non raspbery computer
 
 
