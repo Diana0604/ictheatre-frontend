@@ -1,54 +1,52 @@
-#constants
-from constants import mainConstants
-#Qt components
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QScrollArea
-from PyQt5.QtCore import Qt
-#my components
-from tabs import Market, Sellers, CompanyInformation
+import PySimpleGUI as sg
+import threading
+import time
+from score import scoreTab, scoreUpdate
+from traders import tradersTab, toggleTraderShares, tradersUpdate
 
+sg.theme('Default1')
 
-class MainWindow(QMainWindow):
-
-    def __init__(self):
-        super(MainWindow, self).__init__()
-
-        # set window title
-        self.setWindowTitle(mainConstants.WINDOWTITLE)
-
-        # create tabs object
-        tabs = QTabWidget()
-        tabs.setTabPosition(QTabWidget.West)
-        tabs.setMovable(True)
-
-        # add stock market tab
-        market = Market()
-        tabs.addTab(market, "market")
-        # add general information tab
-        sellersInformation = Sellers()
-        scrollArea = QScrollArea()
-        scrollArea.setWidget(sellersInformation)
-        scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        #scrollArea.setWidgetResizable(True)
-        tabs.addTab(scrollArea, "general information")
-        #add score tab
-        companyInformation = CompanyInformation()
-        tabs.addTab(companyInformation, "score")
-
-        # set tabs as central widget
-        self.setCentralWidget(tabs)
-
-        self.setMaximumWidth(500)
-        self.setMaximumHeight(500)
+#Define Layout with Tabs
+tabgrp = [[sg.TabGroup([[
+    scoreTab,
+    tradersTab,
+]])]]
 
 
 def init():
-    #start app
-    app = QApplication([])
+    global updatesThread
+    #Create Window
+    window = sg.Window("Tabs", tabgrp, finalize=True, resizable=True, size=(500, 500))
 
-    #create main window
-    window = MainWindow()
-    window.show()
+    #Method that will be called every second to update
+    def updates():
+        t = threading.currentThread()
+        while getattr(t, "windowOpen", True):
+            time.sleep(1.0)
+            scoreUpdate(window)
+            tradersUpdate(window)
 
-    #start exec loop
-    app.exec()
+    #Prepare updates thread
+    updatesThread = threading.Thread(target=updates)
+    updatesThread.start()
+    return window
+
+
+def run(window):
+    while True:
+        #Read  values entered by user
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            break
+        if 'button-toggle-trader' in event:
+            toggleTraderShares(window, event)
+
+
+def end(window):
+    global updatesThread
+    #Finish updates before closing windows
+    updatesThread.windowOpen = False
+    updatesThread.join()
+
+    #access all the values and if selected add them to a string
+    window.close()
