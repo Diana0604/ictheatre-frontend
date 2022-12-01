@@ -7,18 +7,23 @@ SYMBOL_DOWN = '▼'
 
 companies = getCompaniesArray()
 sellersList = getSellersList()
-sellers = sellersList["sellers"]
+tradersList = sellersList["sellers"]
 shareBundlesList = sellersList["shareBundles"]
+print(shareBundlesList)
 
 shareBundles = {}
 traders = {}
-for seller in sellers:
-    traders[seller['id']] = seller
-    traders[seller['id']]['open'] = True
-    shareBundles[seller['id']] = []
+for trader in tradersList:
+    traders[trader['id']] = trader
+    traders[trader['id']]['open'] = True
+    shareBundles[trader['id']] = []
 for shareBundle in shareBundlesList:
-    shareBundles[shareBundle['ownerId']].append(
-        f'{companies[shareBundle["companyId"]]["name"]}: {shareBundle["quantity"]} shares - currently valued at ${numberToTwoDecimals(companies[shareBundle["companyId"]]["currentPricePerShare"])}'
+    ownerId = shareBundle["ownerId"]
+    companyId = shareBundle["companyId"]
+    companyName = companies[companyId]["name"]
+    quantity = shareBundle["quantity"]
+    shareBundles[ownerId].append(
+        f'{companyName}: {quantity} shares - currently valued at ${numberToTwoDecimals(companies[shareBundle["companyId"]]["currentPricePerShare"])}'
     )
 
 tradersLayout = [[
@@ -85,8 +90,8 @@ def openGuidelinesWindow(window):
 
 
 def tradersUpdate(window):
-    global companies
     sellersShares = getSellersList()
+    companies = getCompaniesArray()
     traders = sellersShares["sellers"]
     shareBundlesList = sellersShares["shareBundles"]
     shareBundles = {}
@@ -97,6 +102,5 @@ def tradersUpdate(window):
             f'{companies[shareBundle["companyId"]]["name"]}: {shareBundle["quantity"]} shares - currently valued at ${numberToTwoDecimals(companies[shareBundle["companyId"]]["currentPricePerShare"])}'
         )
     for trader in traders:
-        #print(trader)
         traderId = trader["id"]
         window[f'shares-{traderId}'].update(values=shareBundles[traderId])

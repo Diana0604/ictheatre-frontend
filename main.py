@@ -16,15 +16,19 @@ tabgrp = [[sg.TabGroup([[
 def init():
     global updatesThread
     #Create Window
-    window = sg.Window("Tabs", tabgrp, finalize=True, resizable=True, size=(500, 500))
+    window = sg.Window("Tabs",
+                       tabgrp,
+                       finalize=True,
+                       resizable=True,
+                       size=(500, 500))
 
     #Method that will be called every second to update
     def updates():
         t = threading.currentThread()
         while getattr(t, "windowOpen", True):
-            time.sleep(1.0)
             scoreUpdate(window)
             tradersUpdate(window)
+            time.sleep(1.0)
 
     #Prepare updates thread
     updatesThread = threading.Thread(target=updates)

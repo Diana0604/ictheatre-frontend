@@ -16,13 +16,19 @@ def getCompaniesArray():
         return companiesNewJson
     except:
         print("not able to connect to database")
-        return [{
-            "name": "Demo Company",
-            "currentPricePerShare": "0.00"
-        }, {
-            "name": "Demo Company",
-            "currentPricePerShare": "0.00"
-        }]
+        return {
+            1: {
+                "name": "Demo Company",
+                "currentPricePerShare": 0.00,
+                "id": 1,
+            },
+            2: {
+                "name": "Demo Company",
+                "currentPricePerShare": 0.00,
+                "id": 2
+            }
+        }
+
 
 # get array with info player company information
 def getPlayerInfo():
@@ -47,4 +53,18 @@ def getSellersList():
         return sellersListJson
     except:
         print("not able to connect to database")
-        return {"name": "Demo Broker"}
+        return {
+            "sellers": [{
+                "name": "Demo Broker",
+                "id": 3
+            }],
+            "shareBundles": [{
+                "ownerId": 3,
+                "companyId": 1,
+                "quantity": 0,
+            }, {
+                "ownerId": 3,
+                "companyId": 2,
+                "quantity": 0
+            }]
+        }
