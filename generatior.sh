@@ -1,0 +1,1 @@
+ python -m PyInstaller -w wrapper.py --onefile -p "src:src/api:src/constants:src/helpers:src/tabs'

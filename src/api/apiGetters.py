@@ -1,8 +1,8 @@
 import requests
 #from constants import apiConstants
 
-#BASEURL = "http://raspbx.local:3000/mysql"  # for dev in non raspbery computer
-BASEURL = "http://localhost:3000/mysql"  # for dev in non raspbery computer
+BASEURL = "http://192.168.100.1:3000/mysql"  # for dev in non raspbery computer
+#BASEURL = "http://localhost:3000/mysql"  # for dev in non raspbery computer
 
 
 # get array with info on all companies (except for player company)
@@ -18,12 +18,12 @@ def getCompaniesArray():
         print("not able to connect to database")
         return {
             1: {
-                "name": "Demo Company",
-                "currentPricePerShare": 0.00,
+                "name": "Demo Company One",
+                "currentPricePerShare": 1.00,
                 "id": 1,
             },
             2: {
-                "name": "Demo Company",
+                "name": "Demo Company Two",
                 "currentPricePerShare": 0.00,
                 "id": 2
             }
@@ -61,7 +61,7 @@ def getSellersList():
             "shareBundles": [{
                 "ownerId": 3,
                 "companyId": 1,
-                "quantity": 0,
+                "quantity": 1,
             }, {
                 "ownerId": 3,
                 "companyId": 2,

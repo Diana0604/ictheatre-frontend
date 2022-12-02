@@ -12,9 +12,13 @@ scoreLayout = [[
                            size=(500, 1)),
                ]]
 
-scoreTab = sg.Tab('Company Information',
-                  scoreLayout,
-                  element_justification='left')
+scoreTab = sg.Tab(
+    'Company Information',
+    scoreLayout,
+    element_justification='left',
+    key="score-tab",
+    #enable_events=True
+)
 
 count = 0
 

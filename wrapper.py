@@ -16,4 +16,4 @@ import main
 
 window = main.init()
 main.run(window)
-main.end(window)
+#main.end(window)

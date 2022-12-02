@@ -9,7 +9,6 @@ companies = getCompaniesArray()
 sellersList = getSellersList()
 tradersList = sellersList["sellers"]
 shareBundlesList = sellersList["shareBundles"]
-print(shareBundlesList)
 
 shareBundles = {}
 traders = {}
@@ -42,7 +41,9 @@ tradersLayout = [[
 
 for traderId in traders:
     newTraderObject = [
-        sg.Text(traders[traderId]['name'], key=f'trader-{traderId}'),
+        sg.Text(traders[traderId]['name'],
+                key=f'trader-{traderId}',
+                font=('Arial, 15')),
         sg.T(SYMBOL_UP,
              enable_events=True,
              key=f'button-toggle-trader-{traderId}'),
@@ -52,7 +53,8 @@ for traderId in traders:
             values=shareBundles[traderId],  #TODO -> change this info
             key=f'shares-{traderId}',
             visible=True,
-            size=(100, len(shareBundles[traderId])))
+            size=(100, len(shareBundles[traderId])),
+            font=("Arial", 13))
     ]
 
     tradersLayout.append(newTraderObject)
@@ -63,6 +65,8 @@ tradersTab = sg.Tab(
     [[sg.Column(tradersLayout, scrollable=True, size=(1000, 1000))]],
     #tradersLayout,
     element_justification='left',
+    key="traders-tab",
+    #enable_events=True
 )
 
 
@@ -96,6 +100,9 @@ def tradersUpdate(window):
     shareBundlesList = sellersShares["shareBundles"]
     shareBundles = {}
     for shareBundle in shareBundlesList:
+        print(shareBundle['quantity'])
+        if shareBundle['quantity'] == 0:
+            continue
         if not shareBundle['ownerId'] in shareBundles:
             shareBundles[shareBundle['ownerId']] = []
         shareBundles[shareBundle['ownerId']].append(
@@ -104,3 +111,4 @@ def tradersUpdate(window):
     for trader in traders:
         traderId = trader["id"]
         window[f'shares-{traderId}'].update(values=shareBundles[traderId])
+        window[f'shares-{traderId}'].set_size((100, len(shareBundles[traderId])))

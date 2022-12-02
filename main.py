@@ -3,6 +3,7 @@ import threading
 import time
 from score import scoreTab, scoreUpdate
 from traders import openGuidelinesWindow, tradersTab, toggleTraderShares, tradersUpdate
+from market import marketTab
 
 sg.theme('Default1')
 
@@ -10,7 +11,8 @@ sg.theme('Default1')
 tabgrp = [[sg.TabGroup([[
     scoreTab,
     tradersTab,
-]])]]
+    marketTab
+]], enable_events=True, key='tab-group')]]
 
 
 def init():
@@ -25,9 +27,14 @@ def init():
     #Method that will be called every second to update
     def updates():
         t = threading.currentThread()
+        
         while getattr(t, "windowOpen", True):
+            #if getattr(t, "tabOpen", "score-tab"):
             scoreUpdate(window)
-            tradersUpdate(window)
+            #if(getattr(t, "tabOpen", "traders-tab")):
+            #    tradersUpdate(window)
+            #if(getattr(t, "tabOpen", "market-tab")):
+            #    companiesUpdate(window)
             time.sleep(1.0)
 
     #Prepare updates thread
@@ -40,8 +47,13 @@ def run(window):
     while True:
         #Read  values entered by user
         event, values = window.read()
+        #print(values)
         if event == sg.WIN_CLOSED:
+            end(window)
             break
+        if event == 1:
+            continue
+        event = str(event)
         if 'button-toggle-trader' in event:
             toggleTraderShares(window, event)
         if 'open-guidelines' in event:
@@ -52,7 +64,8 @@ def end(window):
     global updatesThread
     #Finish updates before closing windows
     updatesThread.windowOpen = False
-    updatesThread.join()
+    #updatesThread.join()
+    time.sleep(1)
 
     #access all the values and if selected add them to a string
     window.close()
