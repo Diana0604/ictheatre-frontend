@@ -1,9 +1,10 @@
 import PySimpleGUI as sg
 from apiGetters import getSellersList, getCompaniesArray
 from helpers.stringHelpers import numberToTwoDecimals
+from constants import SYMBOL_UP, SYMBOL_DOWN
 
-SYMBOL_UP = '▲'
-SYMBOL_DOWN = '▼'
+sg.theme('Default1')
+sg.set_options(font=("@MS Gothic", 11))
 
 companies = getCompaniesArray()
 sellersList = getSellersList()
@@ -31,19 +32,22 @@ tradersLayout = [[
     ),
 ],
                  [
-                     sg.Text("Click here",
-                             enable_events=True,
-                             key="open-guidelines",
-                             text_color="#3a02fe",
-                             font=('', 10, ['underline'])),
+                     sg.Text(
+                         "Click here",
+                         enable_events=True,
+                         key="open-guidelines",
+                         text_color="#0c00ff",
+                         font=('@MS Gothic', 11, ['underline']),
+                     ),
                      sg.Text("for more information on how to do this.")
                  ]]
 
 for traderId in traders:
     newTraderObject = [
-        sg.Text(traders[traderId]['name'],
-                key=f'trader-{traderId}',
-                font=('Arial, 15')),
+        sg.Text(
+            traders[traderId]['name'],
+            key=f'trader-{traderId}',
+        ),
         sg.T(SYMBOL_UP,
              enable_events=True,
              key=f'button-toggle-trader-{traderId}'),
@@ -54,7 +58,7 @@ for traderId in traders:
             key=f'shares-{traderId}',
             visible=True,
             size=(100, len(shareBundles[traderId])),
-            font=("Arial", 13))
+            )
     ]
 
     tradersLayout.append(newTraderObject)
@@ -62,11 +66,9 @@ for traderId in traders:
 
 tradersTab = sg.Tab(
     'Traders Information',
-    [[sg.Column(tradersLayout, scrollable=True, size=(1000, 1000))]],
-    #tradersLayout,
+    [[sg.Column(tradersLayout, scrollable=True, size=(1000, 800))]],
     element_justification='left',
     key="traders-tab",
-    #enable_events=True
 )
 
 
@@ -79,12 +81,16 @@ def toggleTraderShares(window, event):
 
 
 def openGuidelinesWindow(window):
-    layout = [[sg.Text(
-        "New Window",
-        key="new",
-    )]]
-    window = sg.Window("Second Window", layout, modal=True)
-    choice = None
+    layout = [
+        [sg.Text("Call the number you have been given,")],
+        [sg.Text("Ask for the person you wish to speak to,")],
+        [sg.Text("Look at the information and keep that in mind.")],
+        [sg.Text("Be kind and respectful, don' be a pushover")],
+        [sg.Text("The more you get them to sell, the better your turnover.")],
+        [sg.Text("Ask the right questions, but not too many,")],
+        [sg.Text("or else you'll leave work without a penny.")],
+    ]
+    window = sg.Window("Guidelines", layout, modal=True)
     while True:
         event, values = window.read()
         if event == "Exit" or event == sg.WIN_CLOSED:
@@ -100,7 +106,6 @@ def tradersUpdate(window):
     shareBundlesList = sellersShares["shareBundles"]
     shareBundles = {}
     for shareBundle in shareBundlesList:
-        print(shareBundle['quantity'])
         if shareBundle['quantity'] == 0:
             continue
         if not shareBundle['ownerId'] in shareBundles:
@@ -111,4 +116,5 @@ def tradersUpdate(window):
     for trader in traders:
         traderId = trader["id"]
         window[f'shares-{traderId}'].update(values=shareBundles[traderId])
-        window[f'shares-{traderId}'].set_size((100, len(shareBundles[traderId])))
+        window[f'shares-{traderId}'].set_size(
+            (100, len(shareBundles[traderId])))

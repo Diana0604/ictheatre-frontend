@@ -1,8 +1,8 @@
 import requests
 #from constants import apiConstants
 
-BASEURL = "http://192.168.100.1:3000/mysql"  # for dev in non raspbery computer
-#BASEURL = "http://localhost:3000/mysql"  # for dev in non raspbery computer
+#BASEURL = "http://192.168.100.1:3000/mysql"  # for dev in non raspbery computer
+BASEURL = "http://localhost:3000/mysql"  # for dev in non raspbery computer
 
 
 # get array with info on all companies (except for player company)
@@ -37,12 +37,25 @@ def getPlayerInfo():
         playerJson = playerCompany.json()
         return playerJson
     except:
-        print("not able to connect to database")
+        print("not able to connect to database - player info")
         return {
             "name": "Best Company Ever",
             "stockValueScore": 0,
             "publicRelationsIndex": 0.5,
             "liquidAssets": 500000
+        }
+
+
+def getShowStatus():
+    try:
+        showStatus = requests.get(f"{BASEURL}/showstatus")
+        showStatusJson = showStatus.json()
+        return showStatusJson
+    except:
+        print("not able to connect to database - showstatus")
+        return {
+            "timeSinceStartup": 0,
+            "isPlaying": False,
         }
 
 

@@ -3,16 +3,17 @@ import threading
 import time
 from score import scoreTab, scoreUpdate
 from traders import openGuidelinesWindow, tradersTab, toggleTraderShares, tradersUpdate
-from market import marketTab
+from market import companiesUpdate, marketTab
 
 sg.theme('Default1')
 
 #Define Layout with Tabs
-tabgrp = [[sg.TabGroup([[
-    scoreTab,
-    tradersTab,
-    marketTab
-]], enable_events=True, key='tab-group')]]
+tabgrp = [[
+    sg.TabGroup([[scoreTab, tradersTab, marketTab]],
+                enable_events=True,
+                key='tab-group',
+                background_color="#c0c0c0",)
+]]
 
 
 def init():
@@ -22,19 +23,19 @@ def init():
                        tabgrp,
                        finalize=True,
                        resizable=True,
-                       size=(500, 500))
+                       size=(1000, 800))
 
     #Method that will be called every second to update
     def updates():
         t = threading.currentThread()
-        
+
         while getattr(t, "windowOpen", True):
             #if getattr(t, "tabOpen", "score-tab"):
             scoreUpdate(window)
             #if(getattr(t, "tabOpen", "traders-tab")):
-            #    tradersUpdate(window)
+            tradersUpdate(window)
             #if(getattr(t, "tabOpen", "market-tab")):
-            #    companiesUpdate(window)
+            companiesUpdate(window)
             time.sleep(1.0)
 
     #Prepare updates thread

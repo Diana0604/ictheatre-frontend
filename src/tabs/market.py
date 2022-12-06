@@ -1,33 +1,69 @@
 import PySimpleGUI as sg
 from apiGetters import getCompaniesArray
+from constants import ARROW_UP_FILE, ARROW_DOWN_FILE
+import os
 
-SYMBOL_UP = '▲'
-SYMBOL_DOWN = '▼'
+from src.helpers.stringHelpers import numberToTwoDecimals
+
+#print(os.getcwd())
+
+sg.theme('Default1')
+sg.set_options(font=("@MS Gothic", 11))
 
 companies = getCompaniesArray()
 
 marketLayout = []
+
+columnLeft = []
+columnRight = []
 
 for companyId in companies:
     newCompanyObject = [
         sg.Text(
             f"{companies[companyId]['name']}: Shares Price At ${companies[companyId]['currentPricePerShare']}",
             key=f'market-company-{companies[companyId]["id"]}',
-            font=('Arial', 15)),
+        ),
     ]
-    marketLayout.append(newCompanyObject)
+    columnLeft.append(newCompanyObject)
+    newArrowObject = [
+        sg.Image(ARROW_UP_FILE,
+                 visible=False,
+                 key=f'arrow-up-{companies[companyId]["id"]}'),
+        sg.Image(ARROW_DOWN_FILE,
+                 key=f'arrow-down-{companies[companyId]["id"]}'),
+    ]
+    columnRight.append(newArrowObject)
 
-marketTab = sg.Tab('Market Information',
-                   marketLayout,
-                   element_justification='left',
-                   key="market-tab",
-                   #enable_events=True
-                   )
+marketLayout.append([sg.Column(columnLeft), sg.Column(columnRight)])
+
+marketTab = sg.Tab(
+    'Market Information',
+    marketLayout,
+    element_justification='left',
+    key="market-tab",
+)
+
+previousCompanies = getCompaniesArray()
 
 
 def companiesUpdate(window):
+    global previousCompanies
     companies = getCompaniesArray()
     for companyId in companies:
         window[f'market-company-{companies[companyId]["id"]}'].update(
-            f"{companies[companyId]['name']}: Shares Price At ${companies[companyId]['currentPricePerShare']}"
+            f"{companies[companyId]['name']}: Shares Price At ${numberToTwoDecimals(companies[companyId]['currentPricePerShare'])}"
         )
+        if companies[companyId]["currentPricePerShare"] > previousCompanies[
+                companyId]["currentPricePerShare"]:
+            window[f'arrow-up-{companies[companyId]["id"]}'].update(
+                visible=False)
+            window[f'arrow-down-{companies[companyId]["id"]}'].update(
+                visible=True)
+        if companies[companyId]["currentPricePerShare"] < previousCompanies[
+                companyId]["currentPricePerShare"]:
+            window[f'arrow-up-{companies[companyId]["id"]}'].update(
+                visible=True)
+            window[f'arrow-down-{companies[companyId]["id"]}'].update(
+                visible=False)
+
+    previousCompanies = companies
