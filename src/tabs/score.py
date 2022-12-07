@@ -132,11 +132,11 @@ def scoreUpdate(window):
             window['-GRAPH-'].erase()
             window['-GRAPH-'].draw_rectangle(
                 top_left=(EDGE_OFFSET,
-                          playerJson["liquidAssets"] * percentage),
+                          playerJson["liquidAssets"] * percentage + 10),
                 bottom_right=(EDGE_OFFSET + BAR_WIDTH + BAR_SPACING, 0),
                 fill_color=newColor)
             window['-GRAPH-'].draw_text(text=f' -- $12 billion',
-                                        location=(BAR_SPACING + EDGE_OFFSET +
+                                        location=(BAR_SPACING + BAR_WIDTH + EDGE_OFFSET +
                                                   25, goal * percentage + 10),
                                         font=("@MS Gothic", 15))
             currentLiquidAssets = playerJson["liquidAssets"]
