@@ -8,12 +8,16 @@ sg.theme('Default1')
 sg.set_options(font=("@MS Gothic", 11))
 
 companies = getCompaniesArray()
+numberOfCompanies = len(companies)
 
 marketLayout = []
 
-columnLeft = []
-columnRight = []
+columnLeftNames = []
+columnLeftArrows = []
+columnRightNames = []
+columnRightArrows = []
 
+companyCounter = 0
 for companyId in companies:
     newCompanyObject = [
         sg.Text(
@@ -21,7 +25,10 @@ for companyId in companies:
             key=f'market-company-{companies[companyId]["id"]}',
         ),
     ]
-    columnLeft.append(newCompanyObject)
+    if companyCounter < numberOfCompanies / 2:
+        columnLeftNames.append(newCompanyObject)
+    else:
+        columnRightNames.append(newCompanyObject)
     newArrowObject = [
         sg.Image(ARROW_UP_FILE,
                  visible=False,
@@ -29,9 +36,19 @@ for companyId in companies:
         sg.Image(ARROW_DOWN_FILE,
                  key=f'arrow-down-{companies[companyId]["id"]}'),
     ]
-    columnRight.append(newArrowObject)
+    if companyCounter < numberOfCompanies / 2:
+        columnLeftArrows.append(newArrowObject)
+    else:
+        columnRightArrows.append(newArrowObject)
 
-marketLayout.append([sg.Column(columnLeft), sg.Column(columnRight)])
+    companyCounter = companyCounter + 1
+
+marketLayout.append([
+    sg.Column(columnLeftNames),
+    sg.Column(columnLeftArrows),
+    sg.Column(columnRightNames),
+    sg.Column(columnRightArrows)
+])
 
 marketTab = sg.Tab(
     'Market Information',
