@@ -1,8 +1,8 @@
 import requests
 #from constants import apiConstants
 
-#BASEURL = "http://192.168.100.1:3000/mysql"  # for dev in non raspbery computer
-BASEURL = "http://localhost:3000/mysql"  # for dev in non raspbery computer
+BASEURL = "http://192.168.100.1:3000/mysql"  # for dev in non raspbery computer
+#BASEURL = "http://localhost:3000/mysql"  # for dev in non raspbery computer
 
 
 # get array with info on all companies (except for player company)
