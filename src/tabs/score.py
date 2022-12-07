@@ -1,7 +1,6 @@
 import PySimpleGUI as sg
 from math import floor
-from main import sg
-from apiGetters import getPlayerInfo, getShowStatus
+from src.api.apiGetters import getPlayerInfo, getShowStatus
 from src.helpers.stringHelpers import numberToTwoDecimals
 from datetime import datetime, timedelta
 

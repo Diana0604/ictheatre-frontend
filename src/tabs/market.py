@@ -1,11 +1,8 @@
 import PySimpleGUI as sg
-from apiGetters import getCompaniesArray
-from constants import ARROW_UP_FILE, ARROW_DOWN_FILE
-import os
+from src.api.apiGetters import getCompaniesArray
+from src.constants.symbols import ARROW_UP_FILE, ARROW_DOWN_FILE
 
 from src.helpers.stringHelpers import numberToTwoDecimals
-
-#print(os.getcwd())
 
 sg.theme('Default1')
 sg.set_options(font=("@MS Gothic", 11))

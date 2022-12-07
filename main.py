@@ -1,9 +1,9 @@
 import PySimpleGUI as sg
 import threading
 import time
-from score import scoreTab, scoreUpdate
-from traders import openGuidelinesWindow, tradersTab, toggleTraderShares, tradersUpdate
-from market import companiesUpdate, marketTab
+from src.tabs.score import scoreTab, scoreUpdate
+from src.tabs.traders import openGuidelinesWindow, tradersTab, toggleTraderShares, tradersUpdate
+from src.tabs.market import companiesUpdate, marketTab
 
 sg.theme('Default1')
 
@@ -70,3 +70,6 @@ def end(window):
 
     #access all the values and if selected add them to a string
     window.close()
+
+window = init()
+run(window)
