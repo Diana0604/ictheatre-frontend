@@ -30,10 +30,10 @@ for companyId in companies:
     else:
         columnRightNames.append(newCompanyObject)
     newArrowObject = [
-        sg.Image(ARROW_UP_FILE,
+        sg.Image(data = ARROW_UP_FILE,
                  visible=False,
                  key=f'arrow-up-{companies[companyId]["id"]}'),
-        sg.Image(ARROW_DOWN_FILE,
+        sg.Image(data = ARROW_DOWN_FILE,
                  key=f'arrow-down-{companies[companyId]["id"]}'),
     ]
     if companyCounter < numberOfCompanies / 2:
