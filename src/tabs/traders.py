@@ -18,12 +18,14 @@ for trader in tradersList:
     traders[trader['id']]['open'] = True
     shareBundles[trader['id']] = []
 for shareBundle in shareBundlesList:
+    #print(shareBundle)
     ownerId = shareBundle["ownerId"]
     companyId = shareBundle["companyId"]
     companyName = companies[companyId]["name"]
     quantity = shareBundle["quantity"]
+    boughtAt = shareBundle["boughtAt"]
     shareBundles[ownerId].append(
-        f'{companyName}: {quantity} shares - currently valued at ${numberToTwoDecimals(companies[shareBundle["companyId"]]["currentPricePerShare"])}'
+        f'{companyName}: {quantity} shares - currently valued at ${numberToTwoDecimals(companies[shareBundle["companyId"]]["currentPricePerShare"])} bought at {boughtAt}'
     )
 
 tradersLayout = [[
@@ -111,7 +113,7 @@ def tradersUpdate(window):
         if not shareBundle['ownerId'] in shareBundles:
             shareBundles[shareBundle['ownerId']] = []
         shareBundles[shareBundle['ownerId']].append(
-            f'{companies[shareBundle["companyId"]]["name"]}: {shareBundle["quantity"]} shares - currently valued at ${numberToTwoDecimals(companies[shareBundle["companyId"]]["currentPricePerShare"])}'
+            f'{companies[shareBundle["companyId"]]["name"]}: {shareBundle["quantity"]} shares - currently valued at ${numberToTwoDecimals(companies[shareBundle["companyId"]]["currentPricePerShare"])} bought at ${shareBundle["boughtAt"]}'
         )
     for trader in traders:
         traderId = trader["id"]
